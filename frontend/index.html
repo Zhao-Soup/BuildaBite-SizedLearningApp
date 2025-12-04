@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Bite Reels – Learn in Reels</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      :root {
+        --bg: #050505;
+        --bg-elevated: #111111;
+        --bg-soft: #181818;
+        --accent: #f56040;
+        --accent-soft: #f78361;
+        --text: #f5f5f5;
+        --muted: #a0a0a0;
+        --border-subtle: #262626;
+        --danger: #ff4d4f;
+        --success: #27ae60;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+          "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top left, #1f2933 0, #050505 55%);
+        color: var(--text);
+      }
+
+      .app-shell {
+        display: flex;
+        min-height: 100vh;
+        max-height: 100vh;
+        overflow: hidden;
+      }
+
+      .sidebar {
+        width: 260px;
+        border-right: 1px solid var(--border-subtle);
+        padding: 18px 18px 18px 22px;
+        display: flex;
+        flex-direction: column;
+        background: rgba(5, 5, 5, 0.96);
+        backdrop-filter: blur(24px);
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 24px;
+      }
+
+      .logo-badge {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        background: conic-gradient(
+          from 220deg,
+          #f58529,
+          #feda77,
+          #dd2a7b,
+          #8134af,
+          #515bd4,
+          #f58529
+        );
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.55);
+      }
+
+      .logo-badge-inner {
+        width: 18px;
+        height: 18px;
+        border-radius: 6px;
+        background: #000;
+        border: 2px solid #fff;
+        position: relative;
+      }
+
+      .logo-badge-inner::after {
+        content: "";
+        position: absolute;
+        top: 3px;
+        right: 3px;
+        width: 5px;
+        height: 5px;
+        border-radius: 999px;
+        background: #feda77;
+      }
+
+      .logo-text-main {
+        font-weight: 700;
+        letter-spacing: 0.02em;
+        font-size: 20px;
+      }
+
+      .logo-text-sub {
+        font-size: 11px;
+        color: var(--muted);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .nav-section {
+        margin-top: 8px;
+      }
+
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 10px;
+        border-radius: 999px;
+        color: var(--muted);
+        cursor: pointer;
+        transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
+        font-size: 14px;
+      }
+
+      .nav-item svg {
+        width: 18px;
+        height: 18px;
+      }
+
+      .nav-item.active,
+      .nav-item:hover {
+        background: linear-gradient(90deg, #18181b, #111827);
+        color: #fafafa;
+        transform: translateY(-1px);
+      }
+
+      .sidebar-footer {
+        margin-top: auto;
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .sidebar-footer strong {
+        color: #e5e5e5;
+      }
+
+      .main {
+        flex: 1;
+        display: flex;
+        padding: 16px 18px 18px;
+        gap: 18px;
+      }
+
+      .feed-column {
+        flex: 2.4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-y: auto;
+        padding-right: 6px;
+      }
+
+      .feed-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        max-width: 620px;
+        margin-bottom: 10px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 9px;
+        border-radius: 999px;
+        border: 1px solid rgba(248, 250, 252, 0.08);
+        background: rgba(15, 23, 42, 0.65);
+        color: #e5e7eb;
+        font-size: 11px;
+      }
+
+      .pill-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: radial-gradient(circle at 30% 20%, #fef3c7, #f97316);
+        box-shadow: 0 0 12px rgba(248, 113, 22, 0.8);
+      }
+
+      .pill-ai {
+        border-color: rgba(129, 140, 248, 0.5);
+        background: linear-gradient(
+          130deg,
+          rgba(76, 81, 191, 0.9),
+          rgba(37, 99, 235, 0.85)
+        );
+        color: #e5e7eb;
+      }
+
+      .pill-ai-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: radial-gradient(circle at 30% 20%, #e0f2fe, #38bdf8);
+        box-shadow: 0 0 12px rgba(96, 165, 250, 0.8);
+      }
+
+      .feed-subtitle {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 620px;
+        background: radial-gradient(circle at top, #111827 0, #020617 48%);
+        border-radius: 26px;
+        border: 1px solid rgba(248, 250, 252, 0.06);
+        box-shadow: 0 26px 40px rgba(0, 0, 0, 0.75);
+        margin-bottom: 22px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .card-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 15px 10px;
+      }
+
+      .creator {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 999px;
+        background: radial-gradient(circle at 30% 20%, #fef9c3, #fb7185);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: #020617;
+      }
+
+      .creator-meta {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .creator-name {
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .creator-sub {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .chip {
+        font-size: 11px;
+        padding: 4px 9px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid rgba(148, 163, 184, 0.3);
+        color: #e5e7eb;
+      }
+
+      .video-wrapper {
+        position: relative;
+        background: radial-gradient(circle at top, #020617, #020617 55%, #0b1120 100%);
+      }
+
+      .video-el {
+        width: 100%;
+        max-height: 480px;
+        display: block;
+        object-fit: contain;
+        background: #000;
+      }
+
+      .video-overlay-bottom {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 12px 14px 16px;
+        background: linear-gradient(
+          to top,
+          rgba(0, 0, 0, 0.9),
+          rgba(0, 0, 0, 0.4),
+          transparent
+        );
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+
+      .video-info {
+        max-width: 80%;
+      }
+
+      .video-title {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 4px;
+      }
+
+      .video-desc {
+        font-size: 12px;
+        color: #e5e7eb;
+        opacity: 0.9;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        margin-top: 5px;
+      }
+
+      .tag-pill {
+        font-size: 10px;
+        padding: 2px 7px;
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.8);
+        color: #cbd5f5;
+      }
+
+      .chip-muted {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .actions-rail {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+      }
+
+      .action-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border-radius: 999px;
+        border: none;
+        cursor: pointer;
+        background: rgba(15, 23, 42, 0.95);
+        color: #e5e7eb;
+        transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s ease;
+      }
+
+      .action-btn:hover {
+        transform: translateY(-1px) scale(1.03);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.6);
+        background: rgba(15, 23, 42, 0.98);
+      }
+
+      .action-btn.like-active {
+        background: radial-gradient(circle at 30% 20%, #fb7185, #db2777);
+        color: #fff;
+      }
+
+      .stat {
+        font-size: 11px;
+        color: #e5e7eb;
+        text-align: right;
+      }
+
+      .stat span {
+        color: var(--muted);
+      }
+
+      .card-footer {
+        padding: 8px 13px 11px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid rgba(30, 41, 59, 0.7);
+        background: radial-gradient(circle at top, #020617, #020617);
+      }
+
+      .summary {
+        font-size: 11px;
+        color: #e5e7eb;
+      }
+
+      .summary strong {
+        color: #f97316;
+      }
+
+      .summary-points {
+        font-size: 11px;
+        color: var(--muted);
+        margin-top: 2px;
+      }
+
+      .summary-points li {
+        margin-left: 14px;
+        margin-bottom: 1px;
+      }
+
+      .summary-btn {
+        padding: 6px 11px;
+        border-radius: 999px;
+        border: none;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 500;
+        color: #e5e7eb;
+        background: linear-gradient(
+          135deg,
+          rgba(59, 130, 246, 0.9),
+          rgba(139, 92, 246, 0.95)
+        );
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .summary-btn:disabled {
+        opacity: 0.6;
+        cursor: default;
+        box-shadow: none;
+      }
+
+      .summary-btn span {
+        font-size: 13px;
+      }
+
+      .summary-pulse {
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: #bbf7d0;
+      }
+
+      .right-column {
+        flex: 1.2;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .panel {
+        background: rgba(15, 23, 42, 0.96);
+        border-radius: 18px;
+        border: 1px solid rgba(148, 163, 184, 0.35);
+        padding: 12px 13px 12px;
+        box-shadow: 0 18px 35px rgba(15, 23, 42, 0.9);
+      }
+
+      .panel-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+
+      .panel-title {
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .panel-sub {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .badge {
+        font-size: 10px;
+        padding: 2px 7px;
+        border-radius: 999px;
+        background: rgba(31, 41, 55, 0.9);
+        color: #e5e7eb;
+        border: 1px solid rgba(148, 163, 184, 0.5);
+      }
+
+      .badge.green {
+        border-color: rgba(16, 185, 129, 0.7);
+        color: #bbf7d0;
+        background: rgba(6, 78, 59, 0.7);
+      }
+
+      .login-form {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-top: 6px;
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .field label {
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .field input,
+      .field select {
+        padding: 7px 9px;
+        border-radius: 999px;
+        border: 1px solid rgba(55, 65, 81, 0.9);
+        background: #020617;
+        color: #e5e7eb;
+        font-size: 12px;
+        outline: none;
+      }
+
+      .field input:focus,
+      .field select:focus {
+        border-color: rgba(59, 130, 246, 0.9);
+        box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.6);
+      }
+
+      .btn-primary {
+        margin-top: 4px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        border: none;
+        background: linear-gradient(135deg, #f97316, #db2777);
+        color: white;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 16px 30px rgba(219, 39, 119, 0.45);
+      }
+
+      .btn-primary:disabled {
+        opacity: 0.6;
+        box-shadow: none;
+        cursor: default;
+      }
+
+      .status-pill {
+        margin-top: 4px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .status-pill.ok {
+        color: var(--success);
+      }
+
+      .status-pill.err {
+        color: var(--danger);
+      }
+
+      .progress-list {
+        margin-top: 4px;
+        font-size: 12px;
+      }
+
+      .progress-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 4px 0;
+        border-bottom: 1px solid rgba(31, 41, 55, 0.7);
+      }
+
+      .progress-item:last-child {
+        border-bottom: none;
+      }
+
+      .chip-soft {
+        font-size: 10px;
+        padding: 2px 6px;
+        border-radius: 999px;
+        background: rgba(30, 64, 175, 0.6);
+        color: #dbeafe;
+      }
+
+      .empty-state {
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+        padding: 40px 20px;
+      }
+
+      .empty-emoji {
+        font-size: 26px;
+        margin-bottom: 8px;
+      }
+
+      .story-row {
+        display: flex;
+        gap: 10px;
+        padding: 8px 4px 0;
+        overflow-x: auto;
+      }
+
+      .story {
+        width: 60px;
+        text-align: center;
+      }
+
+      .story-ring {
+        width: 46px;
+        height: 46px;
+        border-radius: 999px;
+        padding: 2px;
+        background: conic-gradient(
+          from 180deg,
+          #f97316,
+          #ec4899,
+          #6366f1,
+          #22c55e,
+          #f97316
+        );
+      }
+
+      .story-inner {
+        width: 100%;
+        height: 100%;
+        border-radius: 999px;
+        background: radial-gradient(circle at 30% 20%, #fefce8, #fecaca);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 600;
+        color: #111827;
+      }
+
+      .story-label {
+        font-size: 10px;
+        color: var(--muted);
+        margin-top: 4px;
+      }
+
+      @media (max-width: 900px) {
+        .sidebar {
+          display: none;
+        }
+
+        .main {
+          padding: 12px 10px 16px;
+        }
+
+        .feed-column {
+          flex: 1;
+        }
+
+        .right-column {
+          display: none;
+        }
+
+        .card {
+          border-radius: 18px;
+        }
+      }
+    </style>
+    <!-- React & ReactDOM via CDN for a lightweight SPA without build tooling -->
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+      const { useState, useEffect } = React;
+
+      const API_BASE = "http://127.0.0.1:8000";
+
+      function initialsFromEmail(email) {
+        if (!email) return "U";
+        const [name] = email.split("@");
+        if (!name) return "U";
+        return name
+          .split(/[._-]/)
+          .filter(Boolean)
+          .map((n) => n[0])
+          .join("")
+          .slice(0, 2)
+          .toUpperCase();
+      }
+
+      async function apiFetch(path, { method = "GET", body, token } = {}) {
+        const headers = { "Content-Type": "application/json" };
+        if (token) headers["Authorization"] = `Bearer ${token}`;
+        const res = await fetch(API_BASE + path, {
+          method,
+          headers,
+          body: body ? JSON.stringify(body) : undefined,
+        });
+        const text = await res.text();
+        let data = null;
+        try {
+          data = text ? JSON.parse(text) : null;
+        } catch {
+          data = text;
+        }
+        if (!res.ok) {
+          const msg = data?.detail || res.statusText || "Request failed";
+          throw new Error(msg);
+        }
+        return data;
+      }
+
+      function Sidebar({ current, onChange }) {
+        return (
+          <aside className="sidebar">
+            <div className="logo">
+              <div className="logo-badge">
+                <div className="logo-badge-inner" />
+              </div>
+              <div>
+                <div className="logo-text-main">Bite Reels</div>
+                <div className="logo-text-sub">LEARN LIKE A FEED</div>
+              </div>
+            </div>
+
+            <div className="nav-section">
+              <div
+                className={
+                  "nav-item " + (current === "feed" ? "active" : "")
+                }
+                onClick={() => onChange("feed")}
+              >
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M4 9.5L12 3l8 6.5V20a1 1 0 0 1-1 1h-5.5v-6h-3v6H5A1 1 0 0 1 4 20V9.5Z"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span>Home</span>
+              </div>
+              <div
+                className={
+                  "nav-item " + (current === "explore" ? "active" : "")
+                }
+                onClick={() => onChange("explore")}
+              >
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M10.5 4.5 8 10.5l6-2.5 2.5-6-6 2.5Z"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <circle
+                    cx="11"
+                    cy="11"
+                    r="7"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                  />
+                </svg>
+                <span>Explore</span>
+              </div>
+              <div
+                className={
+                  "nav-item " + (current === "profile" ? "active" : "")
+                }
+                onClick={() => onChange("profile")}
+              >
+                <svg viewBox="0 0 24 24" fill="none">
+                  <circle
+                    cx="12"
+                    cy="9"
+                    r="3.2"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                  />
+                  <path
+                    d="M6.5 19.5a5.5 5.5 0 0 1 11 0"
+                    stroke="currentColor"
+                    strokeWidth="1.6"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                <span>Profile</span>
+              </div>
+            </div>
+
+            <div className="sidebar-footer">
+              Built on <strong>FastAPI</strong> &middot; Videos + MicroCourses
+              <br />
+              AI summaries and quizzes powered by OpenAI (when configured).
+            </div>
+          </aside>
+        );
+      }
+
+      function FeedHeader({ onRefresh }) {
+        return (
+          <div className="feed-header">
+            <div>
+              <div className="pill">
+                <span className="pill-dot" />
+                <span>Learning Reels</span>
+              </div>
+              <div className="feed-subtitle">
+                Scroll a feed of bite-sized lessons. Tap to play, like, or get
+                an AI summary.
+              </div>
+            </div>
+            <button className="summary-btn" onClick={onRefresh}>
+              <span>⟳</span>
+              Refresh feed
+            </button>
+          </div>
+        );
+      }
+
+      function StoryRow() {
+        const items = [
+          { label: "Basics", emoji: "📚" },
+          { label: "Career", emoji: "💼" },
+          { label: "AI Tips", emoji: "🤖" },
+          { label: "Dev", emoji: "💻" },
+          { label: "Design", emoji: "🎨" },
+          { label: "Money", emoji: "💸" },
+        ];
+        return (
+          <div className="story-row">
+            {items.map((s) => (
+              <div key={s.label} className="story">
+                <div className="story-ring">
+                  <div className="story-inner">{s.emoji}</div>
+                </div>
+                <div className="story-label">{s.label}</div>
+              </div>
+            ))}
+          </div>
+        );
+      }
+
+      function VideoCard({ video, token, onLike, onView }) {
+        const [isPlaying, setIsPlaying] = useState(false);
+        const [isLiking, setIsLiking] = useState(false);
+        const [isSummarizing, setIsSummarizing] = useState(false);
+        const [summary, setSummary] = useState(null);
+        const videoRef = React.useRef(null);
+
+        useEffect(() => {
+          if (!isPlaying) return;
+          const t = setTimeout(() => {
+            onView(video);
+          }, 800);
+          return () => clearTimeout(t);
+        }, [isPlaying]);
+
+        const handlePlayPause = () => {
+          const el = videoRef.current;
+          if (!el) return;
+          if (el.paused) {
+            el.play();
+            setIsPlaying(true);
+          } else {
+            el.pause();
+            setIsPlaying(false);
+          }
+        };
+
+        const handleLike = async () => {
+          if (isLiking) return;
+          setIsLiking(true);
+          try {
+            await onLike(video);
+          } finally {
+            setIsLiking(false);
+          }
+        };
+
+        const handleSummary = async () => {
+          if (isSummarizing) return;
+          setIsSummarizing(true);
+          try {
+            const res = await apiFetch("/ai/generate-summary", {
+              method: "POST",
+              body: {
+                title: video.title,
+                tags: video.tags || [],
+                transcript: video.description || "",
+              },
+              token,
+            });
+            setSummary(res);
+          } catch (e) {
+            console.error(e);
+            setSummary({
+              summary: "AI summary unavailable. Review the description instead.",
+              key_points: [
+                "Check your OpenAI API key configuration on the backend.",
+              ],
+            });
+          } finally {
+            setIsSummarizing(false);
+          }
+        };
+
+        const creatorInitials = initialsFromEmail(video.creator_email || "");
+
+        return (
+          <article className="card">
+            <header className="card-header">
+              <div className="creator">
+                <div className="avatar">{creatorInitials}</div>
+                <div className="creator-meta">
+                  <div className="creator-name">
+                    {video.creator_name || "Creator"}
+                  </div>
+                  <div className="creator-sub">
+                    {video.skill_level || "All levels"} ·{" "}
+                    {new Date(video.created_at).toLocaleDateString()}
+                  </div>
+                </div>
+              </div>
+              <div className="chip">{video.skill_level || "All levels"}</div>
+            </header>
+
+            <div className="video-wrapper" onClick={handlePlayPause}>
+              <video
+                ref={videoRef}
+                className="video-el"
+                src={API_BASE + video.video_url}
+                playsInline
+                muted
+                loop
+              />
+              <div className="video-overlay-bottom">
+                <div className="video-info">
+                  <div className="video-title">{video.title}</div>
+                  {video.description && (
+                    <div className="video-desc">{video.description}</div>
+                  )}
+                  {video.tags && video.tags.length > 0 && (
+                    <div className="tag-row">
+                      {video.tags.slice(0, 4).map((tag) => (
+                        <span key={tag} className="tag-pill">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <div className="actions-rail">
+                  <button
+                    className={
+                      "action-btn " + (video._liked ? "like-active" : "")
+                    }
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleLike();
+                    }}
+                    title="Like"
+                  >
+                    {isLiking ? "…" : "♥"}
+                  </button>
+                  <button
+                    className="action-btn"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handlePlayPause();
+                    }}
+                    title={isPlaying ? "Pause" : "Play"}
+                  >
+                    {isPlaying ? "❚❚" : "▶"}
+                  </button>
+                  <div className="stat">
+                    <div>
+                      {video.likes} <span>likes</span>
+                    </div>
+                    <div>
+                      {video.views} <span>views</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <footer className="card-footer">
+              <div className="summary">
+                <strong>Reel summary</strong>
+                <div className="summary-points">
+                  {summary ? (
+                    <ul>
+                      <li>{summary.summary}</li>
+                      {summary.key_points &&
+                        summary.key_points.map((p, idx) => (
+                          <li key={idx}>{p}</li>
+                        ))}
+                    </ul>
+                  ) : (
+                    <>Tap “AI summary” to condense this lesson.</>
+                  )}
+                </div>
+              </div>
+              <button
+                className="summary-btn"
+                disabled={isSummarizing}
+                onClick={handleSummary}
+              >
+                <span className="summary-pulse" />
+                {isSummarizing ? "Summarizing..." : "AI summary"}
+              </button>
+            </footer>
+          </article>
+        );
+      }
+
+      function AuthPanel({ token, setToken, user, setUser }) {
+        const [mode, setMode] = useState("login");
+        const [email, setEmail] = useState("");
+        const [password, setPassword] = useState("");
+        const [name, setName] = useState("");
+        const [role, setRole] = useState("learner");
+        const [loading, setLoading] = useState(false);
+        const [status, setStatus] = useState(null);
+
+        const handleSubmit = async (e) => {
+          e.preventDefault();
+          setLoading(true);
+          setStatus(null);
+          try {
+            if (mode === "register") {
+              await apiFetch("/auth/register", {
+                method: "POST",
+                body: { name, email, password, role },
+              });
+              setStatus({
+                type: "ok",
+                msg: "Registered! Now log in.",
+              });
+              setMode("login");
+            } else {
+              const data = await apiFetch("/auth/login", {
+                method: "POST",
+                body: { email, password },
+              });
+              setToken(data.access_token);
+              localStorage.setItem("bite_token", data.access_token);
+              setStatus({ type: "ok", msg: "Logged in." });
+              setUser({ email });
+            }
+          } catch (e) {
+            setStatus({ type: "err", msg: e.message });
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        const handleLogout = () => {
+          setToken(null);
+          setUser(null);
+          localStorage.removeItem("bite_token");
+          setStatus({ type: "ok", msg: "Logged out." });
+        };
+
+        return (
+          <div className="panel">
+            <div className="panel-header">
+              <div>
+                <div className="panel-title">
+                  {token ? "Session" : "Welcome"}
+                </div>
+                <div className="panel-sub">
+                  {token
+                    ? "You’re authenticated. Likes & progress can be tied to your account."
+                    : "Sign in like Instagram – email + password."}
+                </div>
+              </div>
+              <span className={"badge " + (token ? "green" : "")}>
+                {token ? "Online" : "Guest"}
+              </span>
+            </div>
+
+            {token ? (
+              <div>
+                <div style={{ fontSize: 12, marginBottom: 6 }}>
+                  Logged in as <strong>{user?.email || "Unknown"}</strong>
+                </div>
+                <button className="btn-primary" onClick={handleLogout}>
+                  Log out
+                </button>
+              </div>
+            ) : (
+              <form className="login-form" onSubmit={handleSubmit}>
+                {mode === "register" && (
+                  <div className="field">
+                    <label>Name</label>
+                    <input
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                  </div>
+                )}
+                <div className="field">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="field">
+                  <label>Password</label>
+                  <input
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                {mode === "register" && (
+                  <div className="field">
+                    <label>Role</label>
+                    <select
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
+                    >
+                      <option value="learner">Learner</option>
+                      <option value="creator">Creator</option>
+                    </select>
+                  </div>
+                )}
+                <button className="btn-primary" disabled={loading}>
+                  {loading
+                    ? "Please wait…"
+                    : mode === "login"
+                    ? "Log in"
+                    : "Create account"}
+                </button>
+                <div style={{ fontSize: 11, marginTop: 4 }}>
+                  {mode === "login" ? (
+                    <>
+                      New here?{" "}
+                      <button
+                        type="button"
+                        style={{
+                          background: "none",
+                          border: "none",
+                          color: "#60a5fa",
+                          cursor: "pointer",
+                          padding: 0,
+                        }}
+                        onClick={() => setMode("register")}
+                      >
+                        Create an account
+                      </button>
+                      .
+                    </>
+                  ) : (
+                    <>
+                      Already have an account?{" "}
+                      <button
+                        type="button"
+                        style={{
+                          background: "none",
+                          border: "none",
+                          color: "#60a5fa",
+                          cursor: "pointer",
+                          padding: 0,
+                        }}
+                        onClick={() => setMode("login")}
+                      >
+                        Log in
+                      </button>
+                      .
+                    </>
+                  )}
+                </div>
+                {status && (
+                  <div
+                    className={
+                      "status-pill " +
+                      (status.type === "ok" ? "ok" : "err")
+                    }
+                  >
+                    {status.msg}
+                  </div>
+                )}
+              </form>
+            )}
+          </div>
+        );
+      }
+
+      function ProgressPanel({ feed }) {
+        const top = (feed || []).slice(0, 4);
+        return (
+          <div className="panel">
+            <div className="panel-header">
+              <div>
+                <div className="panel-title">Today’s streak</div>
+                <div className="panel-sub">
+                  Watch a few reels – build your microlearning streak.
+                </div>
+              </div>
+              <span className="badge green">Learning</span>
+            </div>
+            {top.length === 0 ? (
+              <div className="empty-state" style={{ padding: "10px 8px" }}>
+                <div className="empty-emoji">✨</div>
+                Start your streak by watching any reel from the feed.
+              </div>
+            ) : (
+              <div className="progress-list">
+                {top.map((v) => (
+                  <div key={v.id} className="progress-item">
+                    <div style={{ maxWidth: "70%" }}>
+                      <div style={{ fontSize: 12, fontWeight: 500 }}>
+                        {v.title}
+                      </div>
+                      <div
+                        style={{ fontSize: 11, color: "var(--muted)" }}
+                      >
+                        {v.skill_level} · {v.views} views
+                      </div>
+                    </div>
+                    <div>
+                      <div className="chip-soft">
+                        {v.likes} ♥ · {v.views} 👁
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      }
+
+      function App() {
+        const [currentTab, setCurrentTab] = useState("feed");
+        const [feed, setFeed] = useState([]);
+        const [loading, setLoading] = useState(true);
+        const [error, setError] = useState(null);
+        const [token, setToken] = useState(
+          () => localStorage.getItem("bite_token") || null
+        );
+        const [user, setUser] = useState(null);
+
+        const loadFeed = async () => {
+          setLoading(true);
+          setError(null);
+          try {
+            const data = await apiFetch("/videos/feed", { method: "GET" });
+            setFeed(data);
+          } catch (e) {
+            console.error(e);
+            setError(e.message);
+          } finally {
+            setLoading(false);
+          }
+        };
+
+        useEffect(() => {
+          loadFeed();
+        }, []);
+
+        const handleLike = async (video) => {
+          try {
+            const res = await apiFetch("/videos/like", {
+              method: "POST",
+              body: { video_id: video.id },
+            });
+            setFeed((prev) =>
+              prev.map((v) =>
+                v.id === video.id
+                  ? {
+                      ...v,
+                      likes: res.likes,
+                      _liked: true,
+                    }
+                  : v
+              )
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        };
+
+        const handleView = async (video) => {
+          try {
+            const res = await apiFetch("/videos/increment-view", {
+              method: "POST",
+              body: { video_id: video.id },
+            });
+            setFeed((prev) =>
+              prev.map((v) =>
+                v.id === video.id
+                  ? {
+                      ...v,
+                      views: res.views,
+                    }
+                  : v
+              )
+            );
+          } catch (e) {
+            console.error(e);
+          }
+        };
+
+        return (
+          <div className="app-shell">
+            <Sidebar current={currentTab} onChange={setCurrentTab} />
+            <main className="main">
+              <section className="feed-column">
+                <FeedHeader onRefresh={loadFeed} />
+                <StoryRow />
+                {loading && (
+                  <div className="empty-state">
+                    <div className="empty-emoji">⏳</div>
+                    Loading your learning feed…
+                  </div>
+                )}
+                {error && !loading && (
+                  <div className="empty-state">
+                    <div className="empty-emoji">⚠️</div>
+                    <div>{error}</div>
+                    <div style={{ marginTop: 6, fontSize: 12 }}>
+                      Make sure your FastAPI server is running at{" "}
+                      {API_BASE}.
+                    </div>
+                  </div>
+                )}
+                {!loading && !error && feed.length === 0 && (
+                  <div className="empty-state">
+                    <div className="empty-emoji">🎬</div>
+                    No videos yet. Sign in as a creator and upload via API, or
+                    seed the database.
+                  </div>
+                )}
+                {!loading &&
+                  !error &&
+                  feed.map((video) => (
+                    <VideoCard
+                      key={video.id}
+                      video={video}
+                      token={token}
+                      onLike={handleLike}
+                      onView={handleView}
+                    />
+                  ))}
+              </section>
+
+              <section className="right-column">
+                <AuthPanel
+                  token={token}
+                  setToken={setToken}
+                  user={user}
+                  setUser={setUser}
+                />
+                <ProgressPanel feed={feed} />
+              </section>
+            </main>
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
+  </html>
+
+

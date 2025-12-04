@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-background text-foreground;
+}
+
+.reel-container {
+  @apply flex flex-col items-center justify-center min-h-screen snap-y snap-mandatory overflow-y-scroll bg-background;
+}
+
+.reel {
+  @apply w-full max-w-md h-[70vh] bg-card rounded-lg overflow-hidden shadow-lg snap-center mb-10;
+}
+
+
+

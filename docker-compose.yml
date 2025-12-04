@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  backend:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql+psycopg2://postgres:postgres@db:5432/postgres
+      JWT_SECRET: dev-secret-key
+      JWT_ALGORITHM: HS256
+      JWT_EXP_MINUTES: 1440
+      OPENAI_API_KEY: ""
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+
+  frontend:
+    image: node:20-slim
+    working_dir: /frontend
+    volumes:
+      - ./frontend:/frontend
+    command: npx serve . -l 3000 --single
+    ports:
+      - "3000:3000"
+
+volumes:
+  pgdata:
+
+
